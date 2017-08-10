@@ -62,11 +62,11 @@ void df_mp3_play(int fileNumer) {
 void df_mp3_loop()
 {
 	static unsigned long timer = millis();
-
-	if (millis() - timer > 30000) {
-		timer = millis();
-		myDFPlayer.next();  //Play next mp3 every 3 second.
-	}
+//
+//	if (millis() - timer > 30000) {
+//		timer = millis();
+//		myDFPlayer.next();  //Play next mp3 every 3 second.
+//	}
 
 	if (myDFPlayer.available()) {
 		printDetail(myDFPlayer.readType(), myDFPlayer.read()); //Print the detail message from DFPlayer to handle different errors and states.
