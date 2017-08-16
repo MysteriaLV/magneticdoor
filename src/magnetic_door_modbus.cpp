@@ -46,9 +46,19 @@ void process_actions() {
 
 	switch (mb.Hreg(ACTIONS)) {
 		case 1 : // Put here code for Reset
-			Serial.println("[Reset] action fired");break;
-		case 2 : // Put here code for Force_open_door
-			Serial.println("[Force_open_door] action fired");break;
+			Serial.println("[Reset] action fired");
+			cardreader_relay_out.off();
+			doormagnet_relay_out.off();
+			break;
+		case 2 : // Put here code for Activated
+			Serial.println("[Activated] action fired");
+			cardreader_relay_out.on();
+			break;
+		case 3 : // Put here code for Force_complete
+			Serial.println("[Force_complete] action fired");
+			doormagnet_relay_out.on();
+			mb.addHreg(OPENED, 1);
+			break;
 		default:
 			break;
 	}
@@ -61,8 +71,7 @@ void modbus_set(word event, word value) {
 	mb.Hreg(event, value);
 }
 
-void modbus_setup()
-{
+void modbus_setup() {
 	Serial.println("ModBus Slave MAGNETIC_DOOR:5 for lua/Aliens.lua");
 
 #ifdef EMULATE_RS3485_POWER_PINS
@@ -82,8 +91,8 @@ void modbus_setup()
 
   Serial.print("Connecting to Aliens Room ");
   while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
+	delay(500);
+	Serial.print(".");
   }
 
   Serial.println(" CONNECTED!");
@@ -98,17 +107,16 @@ void modbus_setup()
 #endif
 
 	mb.addHreg(ACTIONS, 0);
-	mb.addHreg(COMPLETE, 0);
+	mb.addHreg(OPENED, 0);
 
 }
 
 
-void modbus_loop()
-{
+void modbus_loop() {
 	mb.task();              // not implemented yet: mb.Hreg(TOTAL_ERRORS, mb.task());
 	process_actions();
 
 	// Notify main console of local events
-	// mb.Hreg(COMPLETE, 1);
+  // mb.Hreg(OPENED, 1);
 
 }

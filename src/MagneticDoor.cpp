@@ -22,7 +22,7 @@ Atm_fan input_event_distributor;
 
 void rfid_reader_event( int idx, int v, int up ) {
 	if ( v ) {
-		modbus_set(COMPLETE, 1);
+		modbus_set(OPENED, 1);
 		df_mp3_play(1);
 	}
 }
