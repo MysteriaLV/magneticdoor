@@ -7,8 +7,8 @@ extern void df_mp3_loop();
 extern void df_mp3_play(int fileNumber);
 
 /*
- * 2    SmokeMachine Relay IN
- * 3    Door Relay IN
+ * 2    CardReader Power OUT
+ * 3    Door Relay OUT
  * 6-10 ModBus
  * 11   MP3 TX (3)
  * 12   MP3 RX (2) via 1K
@@ -17,7 +17,7 @@ extern void df_mp3_play(int fileNumber);
 
 Atm_button rfid_reader_in;
 Atm_timer door_open_delay;
-Atm_led smokemachine_relay_in, door_relay_in;
+Atm_led cardreader_relay_out, doormagnet_relay_out;
 Atm_fan input_event_distributor;
 
 void rfid_reader_event( int idx, int v, int up ) {
@@ -41,21 +41,21 @@ void setup() {
 			.trace(Serial)
 			.begin()
 			.onInput(&rfid_reader_event)
-			.onInput(smokemachine_relay_in, Atm_led::EVT_ON)
+			.onInput(cardreader_relay_out, Atm_led::EVT_ON)
 			.onInput(door_open_delay, Atm_timer::EVT_START);
 
-	smokemachine_relay_in
+	cardreader_relay_out
 			.trace(Serial)
-			.begin(2);
+			.begin(2, true).on();		// TODO control via modbus
 
 	door_open_delay
 //			.trace(Serial)  (don't enable, breaks stuff)
 			.begin(10000)
-			.onFinish(door_relay_in, Atm_led::EVT_ON);
+			.onFinish(doormagnet_relay_out, Atm_led::EVT_ON);
 
-	door_relay_in
+	doormagnet_relay_out
 			.trace(Serial)
-			.begin(3);
+			.begin(3, true);
 }
 
 void loop() {
