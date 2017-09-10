@@ -20,6 +20,9 @@ Atm_timer door_open_delay;
 Atm_led cardreader_relay_out, doormagnet_relay_out;
 Atm_fan input_event_distributor;
 
+Atm_controller single_state;
+Atm_bit state_lock;
+
 void rfid_reader_event( int idx, int v, int up ) {
 	if ( v ) {
 		modbus_set(OPENED, 1);
@@ -29,18 +32,24 @@ void rfid_reader_event( int idx, int v, int up ) {
 
 void setup() {
 	Serial.begin(115200);
-	modbus_setup();
 	df_mp3_setup();
+	modbus_setup(); // Goes after df_mp3_setup() to be active listener
+
+	state_lock.begin();
+	single_state.begin()
+			.IF(rfid_reader_in, '=', Atm_button::PRESSED)
+			.AND(state_lock, '=', Atm_bit::OFF)
+			.onChange(true, input_event_distributor, Atm_fan::EVT_INPUT)
+			.trace(Serial);
 
 	rfid_reader_in
-			.trace(Serial)
-			.begin(13)
-			.onPress(input_event_distributor, Atm_fan::EVT_INPUT);
+			.begin(13);
 
 	input_event_distributor
-			.trace(Serial)
+//			.trace(Serial)
 			.begin()
 			.onInput(&rfid_reader_event)
+			.onInput(state_lock, Atm_bit::EVT_ON)
 			.onInput(cardreader_relay_out, Atm_led::EVT_ON)
 			.onInput(door_open_delay, Atm_timer::EVT_START);
 
@@ -60,6 +69,6 @@ void setup() {
 
 void loop() {
 	modbus_loop();
-	df_mp3_loop();
+//	df_mp3_loop();  // We are not listening anyway, why pretend?
 	automaton.run();
 }

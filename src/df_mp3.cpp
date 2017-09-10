@@ -49,13 +49,8 @@ void df_mp3_setup()
 }
 
 void df_mp3_play(int fileNumer) {
-	myDFPlayer.next();  //Play next mp3 every 3 second.
+	myDFPlayer.playMp3Folder(1);
 	delay(300);
-	myDFPlayer.next();  //Play next mp3 every 3 second.
-	delay(300);
-	myDFPlayer.next();  //Play next mp3 every 3 second.
-	delay(300);
-	myDFPlayer.next();  //Play next mp3 every 3 second.
 }
 
 

@@ -10,6 +10,7 @@ extern void modbus_setup();
 extern void modbus_loop();
 extern void modbus_set(word event, word value);
 extern Atm_led cardreader_relay_out, doormagnet_relay_out;
+extern Atm_bit state_lock;
 
 //////////////// registers of MAGNETIC_DOOR ///////////////////
 enum
