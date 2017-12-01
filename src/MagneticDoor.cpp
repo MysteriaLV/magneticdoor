@@ -50,7 +50,7 @@ void setup() {
 			.begin()
 			.onInput(&rfid_reader_event)
 			.onInput(state_lock, Atm_bit::EVT_ON)
-			.onInput(cardreader_relay_out, Atm_led::EVT_ON)
+			.onInput(cardreader_relay_out, Atm_led::EVT_OFF)
 			.onInput(door_open_delay, Atm_timer::EVT_START);
 
 	cardreader_relay_out
