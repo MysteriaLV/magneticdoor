@@ -39,7 +39,7 @@ void df_mp3_setup()
 		Serial.println(F("Unable to begin:"));
 		Serial.println(F("1.Please recheck the connection!"));
 		Serial.println(F("2.Please insert the SD card!"));
-		while(true);
+		// while(true);
 	}
 	Serial.println(F("DFPlayer Mini online."));
 

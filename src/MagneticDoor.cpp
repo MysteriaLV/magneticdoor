@@ -55,11 +55,11 @@ void setup() {
 
 	cardreader_relay_out
 			.trace(Serial)
-			.begin(2, true).on();		// TODO control via modbus
+			.begin(2, true);
 
 	door_open_delay
 //			.trace(Serial)  (don't enable, breaks stuff)
-			.begin(10000)
+			.begin(100)  // No smoke machine, so no delay needed now
 			.onFinish(doormagnet_relay_out, Atm_led::EVT_ON);
 
 	doormagnet_relay_out
