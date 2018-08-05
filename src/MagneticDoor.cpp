@@ -54,7 +54,7 @@ void setup() {
 
 	cardreader_relay_out
 			.trace(Serial)
-			.begin(2, true).on();		// TODO control via modbus
+			.begin(2, true);
 
 	doormagnet_relay_out
 			.trace(Serial)
