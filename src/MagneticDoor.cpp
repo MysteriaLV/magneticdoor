@@ -16,7 +16,6 @@ extern void df_mp3_play(int fileNumber);
  */
 
 Atm_button rfid_reader_in;
-Atm_timer door_open_delay;
 Atm_led cardreader_relay_out, doormagnet_relay_out;
 Atm_fan input_event_distributor;
 
@@ -51,16 +50,11 @@ void setup() {
 			.onInput(&rfid_reader_event)
 			.onInput(state_lock, Atm_bit::EVT_ON)
 			.onInput(cardreader_relay_out, Atm_led::EVT_OFF)
-			.onInput(door_open_delay, Atm_timer::EVT_START);
+			.onInput(doormagnet_relay_out, Atm_led::EVT_ON);
 
 	cardreader_relay_out
 			.trace(Serial)
 			.begin(2, true).on();		// TODO control via modbus
-
-	door_open_delay
-//			.trace(Serial)  (don't enable, breaks stuff)
-			.begin(10000)
-			.onFinish(doormagnet_relay_out, Atm_led::EVT_ON);
 
 	doormagnet_relay_out
 			.trace(Serial)
