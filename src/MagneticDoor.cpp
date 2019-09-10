@@ -45,7 +45,6 @@ void setup() {
 			.begin(13);
 
 	input_event_distributor
-//			.trace(Serial)
 			.begin()
 			.onInput(&rfid_reader_event)
 			.onInput(state_lock, Atm_bit::EVT_ON)
@@ -54,11 +53,15 @@ void setup() {
 
 	cardreader_relay_out
 			.trace(Serial)
-			.begin(2, true);
+			.begin(2, false);
+
+#ifdef MY_TEST_MODE
+    cardreader_relay_out.on();
+#endif
 
 	doormagnet_relay_out
 			.trace(Serial)
-			.begin(3, true);
+			.begin(3, false);
 }
 
 void loop() {
