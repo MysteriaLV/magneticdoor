@@ -50,6 +50,7 @@ void process_actions() {
 			cardreader_relay_out.off();
 			doormagnet_relay_out.off();
 			state_lock.off();
+			modbus_set(OPENED, 0);
 			break;
 		case 2 : // Put here code for Activated
 			Serial.println("[Activated] action fired");
@@ -59,7 +60,7 @@ void process_actions() {
 			Serial.println("[Force_complete] action fired");
 			doormagnet_relay_out.on();
 			state_lock.on();
-			mb.addHreg(OPENED, 1);
+			modbus_set(OPENED, 1);
 			break;
 		default:
 			break;
